@@ -1,11 +1,23 @@
 package di
 
 import (
-	"github.com/three-kinds/user-center/daos"
-	"github.com/three-kinds/user-center/initializers"
-	"github.com/three-kinds/user-center/services"
+	"github.com/three-kinds/user-center/services/auth_service"
+	"github.com/three-kinds/user-center/services/user_management_service"
 )
 
-func NewUserManagementService() services.IUserManagementService {
-	return services.NewUserManagementServiceImpl(daos.NewUserDAOImpl(initializers.DB))
+// 单体
+
+// 复合
+
+func NewUserManagementService() user_management_service.IUserManagementService {
+	return user_management_service.NewUserManagementServiceImpl(NewUserDAO())
 }
+
+func NewAuthService() auth_service.IAuthService {
+	return auth_service.NewAuthServiceImpl()
+}
+
+//
+//func NewProfileService() profile_service.IProfileService {
+//
+//}

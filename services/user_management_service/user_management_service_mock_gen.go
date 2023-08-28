@@ -2,12 +2,12 @@
 // Source: user_management_service.go
 
 // Package mock_services is a generated GoMock package.
-package services
+package user_management_service
 
 import (
+	"github.com/three-kinds/user-center/services/user_service"
 	reflect "reflect"
 
-	bo "github.com/three-kinds/user-center/services/bo"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockIUserManagementService) EXPECT() *MockIUserManagementServiceMockRec
 }
 
 // CreateUser mocks base method.
-func (m *MockIUserManagementService) CreateUser(createUserBO *bo.CreateUserBO) (*bo.UserDisplayBO, error) {
+func (m *MockIUserManagementService) CreateUser(createUserBO *CreateUserBO) (*user_service.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", createUserBO)
-	ret0, _ := ret[0].(*bo.UserDisplayBO)
+	ret0, _ := ret[0].(*user_service.UserBO)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +64,10 @@ func (mr *MockIUserManagementServiceMockRecorder) DeleteUser(id interface{}) *go
 }
 
 // GetUserByID mocks base method.
-func (m *MockIUserManagementService) GetUserByID(id int64) (*bo.UserDisplayBO, error) {
+func (m *MockIUserManagementService) GetUserByID(id int64) (*user_service.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserByID", id)
-	ret0, _ := ret[0].(*bo.UserDisplayBO)
+	ret0, _ := ret[0].(*user_service.UserBO)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +79,10 @@ func (mr *MockIUserManagementServiceMockRecorder) GetUserByID(id interface{}) *g
 }
 
 // GetUserByUsername mocks base method.
-func (m *MockIUserManagementService) GetUserByUsername(username string) (*bo.UserDisplayBO, error) {
+func (m *MockIUserManagementService) GetUserByUsername(username string) (*user_service.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserByUsername", username)
-	ret0, _ := ret[0].(*bo.UserDisplayBO)
+	ret0, _ := ret[0].(*user_service.UserBO)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,11 +94,11 @@ func (mr *MockIUserManagementServiceMockRecorder) GetUserByUsername(username int
 }
 
 // ListUsers mocks base method.
-func (m *MockIUserManagementService) ListUsers(page, size int, isActive, isSuperuser *bool) (int64, []*bo.UserDisplayBO, error) {
+func (m *MockIUserManagementService) ListUsers(page, size int, isActive, isSuperuser *bool) (int64, []*user_service.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListUsers", page, size, isActive, isSuperuser)
 	ret0, _ := ret[0].(int64)
-	ret1, _ := ret[1].([]*bo.UserDisplayBO)
+	ret1, _ := ret[1].([]*user_service.UserBO)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
@@ -110,7 +110,7 @@ func (mr *MockIUserManagementServiceMockRecorder) ListUsers(page, size, isActive
 }
 
 // PartialUpdateUser mocks base method.
-func (m *MockIUserManagementService) PartialUpdateUser(id int64, updateUserBO *bo.UpdateUserBO) error {
+func (m *MockIUserManagementService) PartialUpdateUser(id int64, updateUserBO *UpdateUserBO) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PartialUpdateUser", id, updateUserBO)
 	ret0, _ := ret[0].(error)

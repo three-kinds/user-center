@@ -3,7 +3,8 @@ package daos
 import (
 	"fmt"
 	"github.com/three-kinds/user-center/daos/models"
-	"github.com/three-kinds/user-center/services/bo"
+	"github.com/three-kinds/user-center/services/user_management_service"
+	"github.com/three-kinds/user-center/services/user_service"
 	"github.com/three-kinds/user-center/utils/generic_utils/dynamic_utils"
 	"github.com/three-kinds/user-center/utils/generic_utils/gorm_addons"
 	"github.com/three-kinds/user-center/utils/service_utils/se"
@@ -13,7 +14,7 @@ import (
 	"time"
 )
 
-func tCreateUserBO2User(bo *bo.CreateUserBO) *models.User {
+func tCreateUserBO2User(bo *user_management_service.CreateUserBO) *models.User {
 	return &models.User{
 		Email:       bo.Email,
 		Username:    bo.Username,
@@ -23,8 +24,8 @@ func tCreateUserBO2User(bo *bo.CreateUserBO) *models.User {
 	}
 }
 
-func tUser2UserDisplayBO(user *models.User) *bo.UserDisplayBO {
-	return &bo.UserDisplayBO{
+func tUser2UserDisplayBO(user *models.User) *user_service.UserBO {
+	return &user_service.UserBO{
 		ID:          user.ID,
 		Username:    user.Username,
 		Email:       user.Email,
@@ -42,7 +43,7 @@ type UserDAOImpl struct {
 	db gorm_addons.IDB
 }
 
-func (dao *UserDAOImpl) CreateUser(c *bo.CreateUserBO, id int64, dateJoined time.Time) (*bo.UserDisplayBO, error) {
+func (dao *UserDAOImpl) CreateUser(c *user_management_service.CreateUserBO, id int64, dateJoined time.Time) (*user_service.UserBO, error) {
 	newUser := tCreateUserBO2User(c)
 	newUser.ID = id
 	newUser.DateJoined = dateJoined
@@ -76,7 +77,7 @@ func (dao *UserDAOImpl) CheckPassword(id int64, password string) (bool, error) {
 	return user.Password == password, nil
 }
 
-func (dao *UserDAOImpl) UpdateUser(id int64, updateUserBO *bo.UpdateUserBO) error {
+func (dao *UserDAOImpl) UpdateUser(id int64, updateUserBO *user_management_service.UpdateUserBO) error {
 	updatedFields := dynamic_utils.OptionalStructFieldsToMap(updateUserBO)
 	if len(updatedFields) == 0 {
 		return nil
@@ -104,7 +105,7 @@ func (dao *UserDAOImpl) Count(isActive *bool, isSuperuser *bool) (total int64, e
 	return
 }
 
-func (dao *UserDAOImpl) ListUsers(page int, size int, isActive *bool, isSuperuser *bool) ([]*bo.UserDisplayBO, error) {
+func (dao *UserDAOImpl) ListUsers(page int, size int, isActive *bool, isSuperuser *bool) ([]*user_service.UserBO, error) {
 	limit := size
 	offset := (page - 1) * size
 	query := dao.db.Model(&models.User{}).Limit(limit).Offset(offset)
@@ -121,7 +122,7 @@ func (dao *UserDAOImpl) ListUsers(page int, size int, isActive *bool, isSuperuse
 		err := se.ServerKnownError(fmt.Sprintf("find users error: %s", result.Error))
 		return nil, err
 	}
-	udList := make([]*bo.UserDisplayBO, len(users))
+	udList := make([]*user_service.UserBO, len(users))
 	for i, user := range users {
 		udList[i] = tUser2UserDisplayBO(&user)
 	}
@@ -138,7 +139,7 @@ func (dao *UserDAOImpl) getRawUserByUniqueField(field, value string) (*models.Us
 	return &user, nil
 }
 
-func (dao *UserDAOImpl) getUserByUniqueField(field, value string) (*bo.UserDisplayBO, error) {
+func (dao *UserDAOImpl) getUserByUniqueField(field, value string) (*user_service.UserBO, error) {
 	user, err := dao.getRawUserByUniqueField(field, value)
 	if err != nil {
 		return nil, err
@@ -146,19 +147,19 @@ func (dao *UserDAOImpl) getUserByUniqueField(field, value string) (*bo.UserDispl
 	return tUser2UserDisplayBO(user), nil
 }
 
-func (dao *UserDAOImpl) GetUserByID(id int64) (*bo.UserDisplayBO, error) {
+func (dao *UserDAOImpl) GetUserByID(id int64) (*user_service.UserBO, error) {
 	return dao.getUserByUniqueField("id", strconv.FormatInt(id, 10))
 }
 
-func (dao *UserDAOImpl) GetUserByUsername(username string) (*bo.UserDisplayBO, error) {
+func (dao *UserDAOImpl) GetUserByUsername(username string) (*user_service.UserBO, error) {
 	return dao.getUserByUniqueField("username", username)
 }
 
-func (dao *UserDAOImpl) GetUserByEmail(email string) (*bo.UserDisplayBO, error) {
+func (dao *UserDAOImpl) GetUserByEmail(email string) (*user_service.UserBO, error) {
 	return dao.getUserByUniqueField("email", email)
 }
 
-func (dao *UserDAOImpl) GetUserByPhoneNumber(number string) (*bo.UserDisplayBO, error) {
+func (dao *UserDAOImpl) GetUserByPhoneNumber(number string) (*user_service.UserBO, error) {
 	return dao.getUserByUniqueField("phone_number", number)
 }
 

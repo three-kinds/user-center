@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/three-kinds/user-center/daos/models"
 	"github.com/three-kinds/user-center/initializers"
-	"github.com/three-kinds/user-center/services/bo"
+	"github.com/three-kinds/user-center/services/user_management_service"
 	"github.com/three-kinds/user-center/utils/frame_utils/test_utils"
 	"github.com/three-kinds/user-center/utils/generic_utils/gorm_addons"
 	"go.uber.org/mock/gomock"
@@ -22,7 +22,7 @@ func TestUserDAOImpl_CreateUser(t *testing.T) {
 	test_utils.ClearTables(initializers.DB, &models.User{})
 
 	dao := NewUserDAOImpl(initializers.DB)
-	createUserBo := &bo.CreateUserBO{
+	createUserBo := &user_management_service.CreateUserBO{
 		Email:       "xx@xx.cpm",
 		Username:    "xx",
 		Password:    "password",
@@ -51,7 +51,7 @@ func TestUserDAOImpl_WithMock(t *testing.T) {
 
 	// create
 	dbMock.EXPECT().Create(gomock.Any()).Return(errDB)
-	createUserBo := &bo.CreateUserBO{
+	createUserBo := &user_management_service.CreateUserBO{
 		Email:       "xx@xx.cpm",
 		Username:    "xx",
 		Password:    "password",
@@ -65,7 +65,7 @@ func TestUserDAOImpl_WithMock(t *testing.T) {
 func TestUserDAOImpl_FailedWithShit(t *testing.T) {
 	test_utils.ClearTables(initializers.DB, &models.User{})
 	dao := NewUserDAOImpl(initializers.DB)
-	newUser, err := dao.CreateUser(&bo.CreateUserBO{
+	newUser, err := dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "1@xx.com",
 		Username:    "1",
 		Password:    "password",
@@ -87,7 +87,7 @@ func TestUserDAOImpl_FailedWithShit(t *testing.T) {
 	assert.Regexp(t, "update user password error", err.Error())
 	// UpdateUser
 	username := "new-username"
-	err = dao.UpdateUser(newUser.ID, &bo.UpdateUserBO{Username: &username})
+	err = dao.UpdateUser(newUser.ID, &user_management_service.UpdateUserBO{Username: &username})
 	assert.NotNil(t, err)
 	assert.Regexp(t, "update user error", err.Error())
 	// DeleteUserByID
@@ -121,7 +121,7 @@ func TestUserDAOImpl_Count(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, int64(0), total)
 
-	_, _ = dao.CreateUser(&bo.CreateUserBO{
+	_, _ = dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "1@xx.com",
 		Username:    "1",
 		IsSuperuser: true,
@@ -130,7 +130,7 @@ func TestUserDAOImpl_Count(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, int64(1), total)
 
-	_, _ = dao.CreateUser(&bo.CreateUserBO{
+	_, _ = dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "2@xx.com",
 		Username:    "2",
 		IsSuperuser: false,
@@ -143,7 +143,7 @@ func TestUserDAOImpl_Count(t *testing.T) {
 func TestUserDAOImpl_UpdatePassword(t *testing.T) {
 	test_utils.ClearTables(initializers.DB, &models.User{})
 	dao := NewUserDAOImpl(initializers.DB)
-	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
+	newUser, _ := dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "1@xx.com",
 		Username:    "1",
 		Password:    "password",
@@ -162,25 +162,25 @@ func TestUserDAOImpl_UpdatePassword(t *testing.T) {
 func TestUserDAOImpl_UpdateUser(t *testing.T) {
 	test_utils.ClearTables(initializers.DB, &models.User{})
 	dao := NewUserDAOImpl(initializers.DB)
-	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
+	newUser, _ := dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "1@xx.com",
 		Username:    "1",
 		Password:    "password",
 		IsSuperuser: true,
 	}, 1, time.Now())
 
-	err := dao.UpdateUser(newUser.ID, &bo.UpdateUserBO{})
+	err := dao.UpdateUser(newUser.ID, &user_management_service.UpdateUserBO{})
 	assert.Nil(t, err)
 
 	nickname := "nickname"
-	err = dao.UpdateUser(newUser.ID, &bo.UpdateUserBO{Nickname: &nickname})
+	err = dao.UpdateUser(newUser.ID, &user_management_service.UpdateUserBO{Nickname: &nickname})
 	assert.Nil(t, err)
 }
 
 func TestUserDAOImpl_ListUsers(t *testing.T) {
 	test_utils.ClearTables(initializers.DB, &models.User{})
 	dao := NewUserDAOImpl(initializers.DB)
-	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
+	newUser, _ := dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "1@xx.com",
 		Username:    "1",
 		Password:    "password",
@@ -198,7 +198,7 @@ func TestUserDAOImpl_ListUsers(t *testing.T) {
 func TestUserDAOImpl_GetUser(t *testing.T) {
 	test_utils.ClearTables(initializers.DB, &models.User{})
 	dao := NewUserDAOImpl(initializers.DB)
-	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
+	newUser, _ := dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "1@xx.com",
 		Username:    "1",
 		Password:    "password",
@@ -225,7 +225,7 @@ func TestUserDAOImpl_GetUser(t *testing.T) {
 func TestUserDAOImpl_DeleteUserByID(t *testing.T) {
 	test_utils.ClearTables(initializers.DB, &models.User{})
 	dao := NewUserDAOImpl(initializers.DB)
-	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
+	newUser, _ := dao.CreateUser(&user_management_service.CreateUserBO{
 		Email:       "1@xx.com",
 		Username:    "1",
 		Password:    "password",

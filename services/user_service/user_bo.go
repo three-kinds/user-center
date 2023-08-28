@@ -1,8 +1,8 @@
-package bo
+package user_service
 
 import "time"
 
-type UserDisplayBO struct {
+type UserBO struct {
 	ID          int64
 	Username    string
 	Email       string

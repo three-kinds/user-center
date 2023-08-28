@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/three-kinds/user-center/daos/models"
-	"github.com/three-kinds/user-center/services/bo"
+	"github.com/three-kinds/user-center/services/reset_password_code_service"
 	"github.com/three-kinds/user-center/utils/generic_utils/gorm_addons"
 	"github.com/three-kinds/user-center/utils/service_utils/se"
 	"time"
@@ -15,15 +15,15 @@ type ResetPasswordCodeDAOImpl struct {
 	logger *logrus.Entry
 }
 
-func tCode2CodeBo(code *models.ResetPasswordCode) *bo.ResetPasswordCodeBo {
-	return &bo.ResetPasswordCodeBo{
+func tCode2CodeBo(code *models.ResetPasswordCode) *reset_password_code_service.ResetPasswordCodeBo {
+	return &reset_password_code_service.ResetPasswordCodeBo{
 		Key:        code.Key,
 		UserID:     code.UserID,
 		Expiration: code.Expiration,
 	}
 }
 
-func (dao *ResetPasswordCodeDAOImpl) CreateCode(key string, userID int64, expiration time.Time) (*bo.ResetPasswordCodeBo, error) {
+func (dao *ResetPasswordCodeDAOImpl) CreateCode(key string, userID int64, expiration time.Time) (*reset_password_code_service.ResetPasswordCodeBo, error) {
 	code := &models.ResetPasswordCode{
 		Key:        key,
 		UserID:     userID,
@@ -36,7 +36,7 @@ func (dao *ResetPasswordCodeDAOImpl) CreateCode(key string, userID int64, expira
 	return tCode2CodeBo(code), nil
 }
 
-func (dao *ResetPasswordCodeDAOImpl) GetCodeByKey(key string) (*bo.ResetPasswordCodeBo, error) {
+func (dao *ResetPasswordCodeDAOImpl) GetCodeByKey(key string) (*reset_password_code_service.ResetPasswordCodeBo, error) {
 	code := &models.ResetPasswordCode{}
 	result := dao.db.Where("key = ?", key).First(code)
 	if result.Error != nil {

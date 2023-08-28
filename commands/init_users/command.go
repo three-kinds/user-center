@@ -5,12 +5,12 @@ import (
 	"github.com/three-kinds/user-center/daos/models"
 	"github.com/three-kinds/user-center/di"
 	"github.com/three-kinds/user-center/initializers"
-	"github.com/three-kinds/user-center/services"
-	"github.com/three-kinds/user-center/services/bo"
+	"github.com/three-kinds/user-center/services/user_management_service"
+	"github.com/three-kinds/user-center/services/user_service"
 	"log"
 )
 
-var userList = []bo.CreateUserBO{
+var userList = []user_management_service.CreateUserBO{
 	{
 		Email:       "admin@xx.com",
 		Username:    "admin",
@@ -31,7 +31,7 @@ func init() {
 	initializers.InitSnowflakeNode(initializers.Config)
 }
 
-func mustCreateUser(s services.IUserManagementService, user *bo.CreateUserBO) *bo.UserDisplayBO {
+func mustCreateUser(s user_management_service.IUserManagementService, user *user_management_service.CreateUserBO) *user_service.UserBO {
 	newUser, err := s.CreateUser(user)
 	if err != nil {
 		log.Panicln("create user failed", err)

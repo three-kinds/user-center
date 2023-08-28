@@ -6,7 +6,7 @@ import (
 	"github.com/three-kinds/user-center/daos/models"
 	"github.com/three-kinds/user-center/di"
 	"github.com/three-kinds/user-center/initializers"
-	"github.com/three-kinds/user-center/services"
+	"github.com/three-kinds/user-center/services/user_management_service"
 	"github.com/three-kinds/user-center/utils/frame_utils/test_utils"
 	"github.com/three-kinds/user-center/utils/generic_utils/testify_addons"
 	"go.uber.org/mock/gomock"
@@ -30,7 +30,7 @@ func TestMustCreateUser_WithMock(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	serviceMock := services.NewMockIUserManagementService(ctrl)
+	serviceMock := user_management_service.NewMockIUserManagementService(ctrl)
 	serviceMock.EXPECT().CreateUser(gomock.Any()).Return(nil, errors.New("mock error"))
 	testify_addons.PanicsWithValueMatch(t, "create user failed", func() {
 		mustCreateUser(serviceMock, &userList[0])
