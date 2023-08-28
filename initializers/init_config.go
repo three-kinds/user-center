@@ -33,6 +33,8 @@ type Configuration struct {
 	EmailPassword string `mapstructure:"EMAIL_PASSWORD"`
 	EmailUseSSL   bool   `mapstructure:"EMAIL_USE_SSL"`
 	EmailFrom     string `mapstructure:"EMAIL_FROM"`
+
+	ThrottleByAnonymousIP uint `mapstructure:"THROTTLE_BY_ANONYMOUS_IP"`
 }
 
 var Config *Configuration

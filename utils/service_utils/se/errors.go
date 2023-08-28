@@ -33,3 +33,9 @@ func NotFoundError(message string, options ...Option) *ServiceError {
 	e.Message = message
 	return e
 }
+
+func ThrottledError(message string, options ...Option) *ServiceError {
+	e := BuildError(496, "NotFound", options...)
+	e.Message = message
+	return e
+}

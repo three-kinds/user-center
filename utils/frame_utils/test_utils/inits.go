@@ -7,9 +7,15 @@ import (
 func InitOnTestDAO(tables ...any) {
 	initializers.InitConfig("")
 	initializers.InitDB(initializers.Config, tables...)
+	initializers.InitLogger()
 }
 
 func InitOnTestService(tables ...any) {
-	InitOnTestDAO(tables)
+	InitOnTestDAO(tables...)
 	initializers.InitSnowflakeNode(initializers.Config)
+}
+
+func InitOnTestController(tables ...any) {
+	InitOnTestService(tables...)
+	initializers.InitValidators()
 }
