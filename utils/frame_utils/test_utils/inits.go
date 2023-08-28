@@ -7,8 +7,6 @@ import (
 func InitOnTestDAO(tables ...any) {
 	initializers.InitConfig("")
 	initializers.InitDB(initializers.Config, tables...)
-	ClearTables(initializers.DB, tables...)
-
 }
 
 func InitOnTestService(tables ...any) {
