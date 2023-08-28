@@ -18,6 +18,8 @@ type Configuration struct {
 	DBPassword string `mapstructure:"POSTGRES_PASSWORD"`
 	DBName     string `mapstructure:"POSTGRES_DB"`
 
+	SnowflakeNode int64 `mapstructure:"SNOWFLAKE_NODE"`
+
 	AccessTokenPrivateKey  string        `mapstructure:"ACCESS_TOKEN_PRIVATE_KEY"`
 	AccessTokenPublicKey   string        `mapstructure:"ACCESS_TOKEN_PUBLIC_KEY"`
 	AccessTokenExpiresIn   time.Duration `mapstructure:"ACCESS_TOKEN_EXPIRED_IN"`
