@@ -5,7 +5,7 @@
 package user_management_service
 
 import (
-	"github.com/three-kinds/user-center/services/user_service"
+	"github.com/three-kinds/user-center/services/bo"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -35,10 +35,10 @@ func (m *MockIUserManagementService) EXPECT() *MockIUserManagementServiceMockRec
 }
 
 // CreateUser mocks base method.
-func (m *MockIUserManagementService) CreateUser(createUserBO *CreateUserBO) (*user_service.UserBO, error) {
+func (m *MockIUserManagementService) CreateUser(createUserBO *CreateUserBO) (*bo.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", createUserBO)
-	ret0, _ := ret[0].(*user_service.UserBO)
+	ret0, _ := ret[0].(*bo.UserBO)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +64,10 @@ func (mr *MockIUserManagementServiceMockRecorder) DeleteUser(id interface{}) *go
 }
 
 // GetUserByID mocks base method.
-func (m *MockIUserManagementService) GetUserByID(id int64) (*user_service.UserBO, error) {
+func (m *MockIUserManagementService) GetUserByID(id int64) (*bo.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserByID", id)
-	ret0, _ := ret[0].(*user_service.UserBO)
+	ret0, _ := ret[0].(*bo.UserBO)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +79,10 @@ func (mr *MockIUserManagementServiceMockRecorder) GetUserByID(id interface{}) *g
 }
 
 // GetUserByUsername mocks base method.
-func (m *MockIUserManagementService) GetUserByUsername(username string) (*user_service.UserBO, error) {
+func (m *MockIUserManagementService) GetUserByUsername(username string) (*bo.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserByUsername", username)
-	ret0, _ := ret[0].(*user_service.UserBO)
+	ret0, _ := ret[0].(*bo.UserBO)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,11 +94,11 @@ func (mr *MockIUserManagementServiceMockRecorder) GetUserByUsername(username int
 }
 
 // ListUsers mocks base method.
-func (m *MockIUserManagementService) ListUsers(page, size int, isActive, isSuperuser *bool) (int64, []*user_service.UserBO, error) {
+func (m *MockIUserManagementService) ListUsers(page, size int, isActive, isSuperuser *bool) (int64, []*bo.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListUsers", page, size, isActive, isSuperuser)
 	ret0, _ := ret[0].(int64)
-	ret1, _ := ret[1].([]*user_service.UserBO)
+	ret1, _ := ret[1].([]*bo.UserBO)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }

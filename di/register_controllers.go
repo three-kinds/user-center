@@ -3,6 +3,7 @@ package di
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/three-kinds/user-center/controllers/auth_controller"
+	"github.com/three-kinds/user-center/controllers/profile_controller"
 	"github.com/three-kinds/user-center/initializers"
 	"github.com/three-kinds/user-center/utils/frame_utils/middlewares"
 )
@@ -19,4 +20,15 @@ func RegisterAuthControllerRouter(rg *gin.RouterGroup) {
 	router.POST("/user-registration", controller.RegisterUser)
 	router.POST("/password-forgotten", controller.ForgotPassword)
 	router.POST("/password-reset", controller.ResetPassword)
+}
+
+func RegisterProfileControllerRouter(rg *gin.RouterGroup) {
+	controller := profile_controller.NewProfileController(NewProfileService())
+
+	router := rg.Group("profile")
+	router.Use(middlewares.TokenValidator(NewUserService()))
+
+	router.GET("", controller.GetProfile)
+	router.PATCH("", controller.PartialUpdateProfile)
+	router.PUT("/password", controller.UpdatePassword)
 }

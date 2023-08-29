@@ -3,7 +3,7 @@ package user_management_service
 import (
 	"github.com/three-kinds/user-center/daos"
 	"github.com/three-kinds/user-center/initializers"
-	"github.com/three-kinds/user-center/services/user_service"
+	"github.com/three-kinds/user-center/services/bo"
 	"github.com/three-kinds/user-center/utils/service_utils/password_utils"
 	"time"
 )
@@ -12,7 +12,7 @@ type UserManagementServiceImpl struct {
 	userDAO daos.IUserDAO
 }
 
-func (s *UserManagementServiceImpl) ListUsers(page int, size int, isActive *bool, isSuperuser *bool) (total int64, userList []*user_service.UserBO, err error) {
+func (s *UserManagementServiceImpl) ListUsers(page int, size int, isActive *bool, isSuperuser *bool) (total int64, userList []*bo.UserBO, err error) {
 	total, err = s.userDAO.Count(isActive, isSuperuser)
 	if err != nil {
 		return 0, nil, err
@@ -24,7 +24,7 @@ func (s *UserManagementServiceImpl) ListUsers(page int, size int, isActive *bool
 	return total, userList, nil
 }
 
-func (s *UserManagementServiceImpl) CreateUser(createUserBO *CreateUserBO) (*user_service.UserBO, error) {
+func (s *UserManagementServiceImpl) CreateUser(createUserBO *CreateUserBO) (*bo.UserBO, error) {
 	id := int64(initializers.SnowflakeNode.Generate())
 	dateJoined := time.Now()
 	hashPassword, err := password_utils.HashPassword(createUserBO.Password)
@@ -48,11 +48,11 @@ func (s *UserManagementServiceImpl) PartialUpdateUser(id int64, updateUserBO *Up
 	return s.userDAO.UpdateUser(id, updateUserBO)
 }
 
-func (s *UserManagementServiceImpl) GetUserByID(id int64) (*user_service.UserBO, error) {
+func (s *UserManagementServiceImpl) GetUserByID(id int64) (*bo.UserBO, error) {
 	return s.userDAO.GetUserByID(id)
 }
 
-func (s *UserManagementServiceImpl) GetUserByUsername(username string) (*user_service.UserBO, error) {
+func (s *UserManagementServiceImpl) GetUserByUsername(username string) (*bo.UserBO, error) {
 	return s.userDAO.GetUserByUsername(username)
 }
 

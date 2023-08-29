@@ -39,3 +39,9 @@ func ThrottledError(message string, options ...Option) *ServiceError {
 	e.Message = message
 	return e
 }
+
+func InvalidTokenError(message string, options ...Option) *ServiceError {
+	e := BuildError(496, "InvalidTokenError", options...)
+	e.Message = message
+	return e
+}
