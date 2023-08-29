@@ -1,4 +1,4 @@
-package auth_controller
+package user_management_controller
 
 import (
 	"github.com/three-kinds/user-center/services/user_management_service"

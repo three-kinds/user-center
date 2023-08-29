@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/three-kinds/user-center/controllers/auth_controller"
 	"github.com/three-kinds/user-center/controllers/profile_controller"
+	"github.com/three-kinds/user-center/controllers/user_management_controller"
 	"github.com/three-kinds/user-center/initializers"
 	"github.com/three-kinds/user-center/utils/frame_utils/middlewares"
 )
@@ -31,4 +32,18 @@ func RegisterProfileControllerRouter(rg *gin.RouterGroup) {
 	router.GET("", controller.GetProfile)
 	router.PATCH("", controller.PartialUpdateProfile)
 	router.PUT("/password", controller.UpdatePassword)
+}
+
+func RegisterUserManagementControllerRouter(rg *gin.RouterGroup) {
+	controller := user_management_controller.NewUserManagementController(NewUserManagementService())
+
+	router := rg.Group("user_management")
+	router.Use(middlewares.TokenValidator(NewUserService()), middlewares.IsSuperuser())
+
+	router.GET("", controller.ListUsers)
+	router.POST("", controller.CreateUser)
+
+	router.GET("/:id", controller.GetUser)
+	router.PATCH("/:id", controller.PartialUpdateUser)
+	router.DELETE("/:id", controller.DeleteUser)
 }

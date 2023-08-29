@@ -45,3 +45,10 @@ func InvalidTokenError(message string, options ...Option) *ServiceError {
 	e.Message = message
 	return e
 }
+
+func ForbiddenError(cause string, options ...Option) *ServiceError {
+	e := BuildError(496, "ForbiddenError", options...)
+	e.Message = "forbidden"
+	e.Cause = cause
+	return e
+}
