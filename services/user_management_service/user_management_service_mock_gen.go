@@ -35,7 +35,7 @@ func (m *MockIUserManagementService) EXPECT() *MockIUserManagementServiceMockRec
 }
 
 // CreateUser mocks base method.
-func (m *MockIUserManagementService) CreateUser(createUserBO *CreateUserBO) (*bo.UserBO, error) {
+func (m *MockIUserManagementService) CreateUser(createUserBO *bo.CreateUserBO) (*bo.UserBO, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", createUserBO)
 	ret0, _ := ret[0].(*bo.UserBO)
@@ -110,7 +110,7 @@ func (mr *MockIUserManagementServiceMockRecorder) ListUsers(page, size, isActive
 }
 
 // PartialUpdateUser mocks base method.
-func (m *MockIUserManagementService) PartialUpdateUser(id int64, updateUserBO *UpdateUserBO) error {
+func (m *MockIUserManagementService) PartialUpdateUser(id int64, updateUserBO *bo.UpdateUserBO) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PartialUpdateUser", id, updateUserBO)
 	ret0, _ := ret[0].(error)

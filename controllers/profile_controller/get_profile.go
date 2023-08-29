@@ -9,5 +9,5 @@ import (
 
 func (c *ProfileController) GetProfile(ctx *gin.Context) {
 	userBO := gin_utils.GetUser(ctx)
-	ctx.JSON(http.StatusOK, (*vo.UserVO)(userBO))
+	ctx.JSON(http.StatusOK, vo.TUserBO2UserVO(userBO))
 }

@@ -2,7 +2,7 @@ package user_management_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/three-kinds/user-center/services/user_management_service"
+	"github.com/three-kinds/user-center/services/bo"
 	"github.com/three-kinds/user-center/utils/frame_utils/gin_utils"
 	"net/http"
 )
@@ -22,7 +22,7 @@ func (c *UserManagementController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	user, err := c.userManagementService.CreateUser(&user_management_service.CreateUserBO{
+	user, err := c.userManagementService.CreateUser(&bo.CreateUserBO{
 		Email:       request.Email,
 		Username:    request.Username,
 		Password:    request.Password,

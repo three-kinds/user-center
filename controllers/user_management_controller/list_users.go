@@ -31,7 +31,7 @@ func (c *UserManagementController) ListUsers(ctx *gin.Context) {
 
 	userList := make([]*vo.UserVO, len(users))
 	for i, user := range users {
-		userList[i] = (*vo.UserVO)(user)
+		userList[i] = vo.TUserBO2UserVO(user)
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{

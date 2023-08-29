@@ -5,6 +5,6 @@ import (
 )
 
 type IProfileService interface {
-	PartialUpdateProfile(id int64, updateProfileBO *UpdateProfileBO) (*bo.UserBO, error)
+	PartialUpdateProfile(id int64, updateProfileBO *bo.UpdateProfileBO) (*bo.UserBO, error)
 	UpdatePassword(id int64, oldPassword string, newPassword string) error
 }

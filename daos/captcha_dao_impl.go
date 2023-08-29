@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/three-kinds/user-center/daos/models"
-	"github.com/three-kinds/user-center/services/captcha_service"
+	"github.com/three-kinds/user-center/services/bo"
 	"github.com/three-kinds/user-center/utils/generic_utils/gorm_addons"
 	"github.com/three-kinds/user-center/utils/service_utils/se"
 	"time"
@@ -15,15 +15,15 @@ type CaptchaDAOImpl struct {
 	logger *logrus.Entry
 }
 
-func tCaptcha2CaptchaDisplayBo(captcha *models.Captcha) *captcha_service.CaptchaBo {
-	return &captcha_service.CaptchaBo{
+func tCaptcha2CaptchaDisplayBo(captcha *models.Captcha) *bo.CaptchaBo {
+	return &bo.CaptchaBo{
 		Key:        captcha.Key,
 		Answer:     captcha.Answer,
 		Expiration: captcha.Expiration,
 	}
 }
 
-func (dao *CaptchaDAOImpl) CreateCaptcha(key string, answer string, expiration time.Time) (*captcha_service.CaptchaBo, error) {
+func (dao *CaptchaDAOImpl) CreateCaptcha(key string, answer string, expiration time.Time) (*bo.CaptchaBo, error) {
 	captcha := &models.Captcha{
 		Key:        key,
 		Answer:     answer,
@@ -36,7 +36,7 @@ func (dao *CaptchaDAOImpl) CreateCaptcha(key string, answer string, expiration t
 	return tCaptcha2CaptchaDisplayBo(captcha), nil
 }
 
-func (dao *CaptchaDAOImpl) GetCaptchaByKey(key string) (*captcha_service.CaptchaBo, error) {
+func (dao *CaptchaDAOImpl) GetCaptchaByKey(key string) (*bo.CaptchaBo, error) {
 	captcha := &models.Captcha{}
 	result := dao.db.Where("key = ?", key).First(captcha)
 	if result.Error != nil {

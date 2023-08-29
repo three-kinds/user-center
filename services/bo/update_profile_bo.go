@@ -1,4 +1,4 @@
-package profile_service
+package bo
 
 type UpdateProfileBO struct {
 	Nickname    *string

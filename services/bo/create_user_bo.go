@@ -1,4 +1,4 @@
-package user_management_service
+package bo
 
 type CreateUserBO struct {
 	Email       string

@@ -24,7 +24,7 @@ func (s *UserManagementServiceImpl) ListUsers(page int, size int, isActive *bool
 	return total, userList, nil
 }
 
-func (s *UserManagementServiceImpl) CreateUser(createUserBO *CreateUserBO) (*bo.UserBO, error) {
+func (s *UserManagementServiceImpl) CreateUser(createUserBO *bo.CreateUserBO) (*bo.UserBO, error) {
 	id := int64(initializers.SnowflakeNode.Generate())
 	dateJoined := time.Now()
 	hashPassword, err := password_utils.HashPassword(createUserBO.Password)
@@ -36,16 +36,21 @@ func (s *UserManagementServiceImpl) CreateUser(createUserBO *CreateUserBO) (*bo.
 	return s.userDAO.CreateUser(createUserBO, id, dateJoined)
 }
 
-func (s *UserManagementServiceImpl) PartialUpdateUser(id int64, updateUserBO *UpdateUserBO) error {
+func (s *UserManagementServiceImpl) PartialUpdateUser(id int64, updateUserBO *bo.UpdateUserBO) (*bo.UserBO, error) {
 	if updateUserBO.Password != nil {
 		hashPassword, err := password_utils.HashPassword(*updateUserBO.Password)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		updateUserBO.Password = &hashPassword
 	}
 
-	return s.userDAO.UpdateUser(id, updateUserBO)
+	err := s.userDAO.UpdateUser(id, updateUserBO)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.GetUserByID(id)
 }
 
 func (s *UserManagementServiceImpl) GetUserByID(id int64) (*bo.UserBO, error) {

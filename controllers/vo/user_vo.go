@@ -1,6 +1,9 @@
 package vo
 
-import "time"
+import (
+	"github.com/three-kinds/user-center/services/bo"
+	"time"
+)
 
 type UserVO struct {
 	ID          int64      `json:"id"`
@@ -13,4 +16,19 @@ type UserVO struct {
 	LastLogin   *time.Time `json:"last_login"`
 	IsActive    bool       `json:"is_active"`
 	IsSuperuser bool       `json:"is_superuser"`
+}
+
+func TUserBO2UserVO(bo *bo.UserBO) *UserVO {
+	return &UserVO{
+		ID:          bo.ID,
+		Username:    bo.Username,
+		Email:       bo.Email,
+		Nickname:    bo.Nickname,
+		PhoneNumber: bo.PhoneNumber,
+		Avatar:      bo.Avatar,
+		DateJoined:  bo.DateJoined,
+		LastLogin:   bo.LastLogin,
+		IsActive:    bo.IsActive,
+		IsSuperuser: bo.IsSuperuser,
+	}
 }

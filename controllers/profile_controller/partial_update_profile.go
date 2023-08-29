@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/three-kinds/user-center/controllers/vo"
-	"github.com/three-kinds/user-center/services/profile_service"
+	"github.com/three-kinds/user-center/services/bo"
 	"github.com/three-kinds/user-center/utils/frame_utils/gin_utils"
 	"mime/multipart"
 	"net/http"
@@ -35,7 +35,7 @@ func (c *ProfileController) PartialUpdateProfile(ctx *gin.Context) {
 		avatar = &relativePath
 	}
 
-	updatedUser, err := c.profileService.PartialUpdateProfile(user.ID, &profile_service.UpdateProfileBO{
+	updatedUser, err := c.profileService.PartialUpdateProfile(user.ID, &bo.UpdateProfileBO{
 		Nickname:    request.Nickname,
 		PhoneNumber: request.PhoneNumber,
 		Avatar:      avatar,
@@ -45,5 +45,5 @@ func (c *ProfileController) PartialUpdateProfile(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, (*vo.UserVO)(updatedUser))
+	ctx.JSON(http.StatusOK, vo.TUserBO2UserVO(updatedUser))
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/three-kinds/user-center/controllers/vo"
-	"github.com/three-kinds/user-center/services/user_management_service"
+	"github.com/three-kinds/user-center/services/bo"
 	"github.com/three-kinds/user-center/utils/frame_utils/gin_utils"
 	"mime/multipart"
 	"net/http"
@@ -52,7 +52,7 @@ func (c *UserManagementController) PartialUpdateUser(ctx *gin.Context) {
 		avatar = &relativePath
 	}
 
-	updatedUser, err := c.userManagementService.PartialUpdateUser(user.ID, &user_management_service.UpdateUserBO{
+	updatedUser, err := c.userManagementService.PartialUpdateUser(user.ID, &bo.UpdateUserBO{
 		Email:       request.Email,
 		Username:    request.Username,
 		Password:    request.Password,
@@ -67,5 +67,5 @@ func (c *UserManagementController) PartialUpdateUser(ctx *gin.Context) {
 		gin_utils.AbortWithError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, (*vo.UserVO)(updatedUser))
+	ctx.JSON(http.StatusOK, vo.TUserBO2UserVO(updatedUser))
 }

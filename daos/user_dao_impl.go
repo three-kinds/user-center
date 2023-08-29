@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/three-kinds/user-center/daos/models"
 	"github.com/three-kinds/user-center/services/bo"
-	"github.com/three-kinds/user-center/services/user_management_service"
 	"github.com/three-kinds/user-center/utils/generic_utils/dynamic_utils"
 	"github.com/three-kinds/user-center/utils/generic_utils/gorm_addons"
 	"github.com/three-kinds/user-center/utils/service_utils/se"
@@ -14,7 +13,7 @@ import (
 	"time"
 )
 
-func tCreateUserBO2User(bo *user_management_service.CreateUserBO) *models.User {
+func tCreateUserBO2User(bo *bo.CreateUserBO) *models.User {
 	return &models.User{
 		Email:       bo.Email,
 		Username:    bo.Username,
@@ -24,11 +23,12 @@ func tCreateUserBO2User(bo *user_management_service.CreateUserBO) *models.User {
 	}
 }
 
-func tUser2UserDisplayBO(user *models.User) *bo.UserBO {
+func tUser2UserBO(user *models.User) *bo.UserBO {
 	return &bo.UserBO{
 		ID:          user.ID,
 		Username:    user.Username,
 		Email:       user.Email,
+		Password:    user.Password,
 		Nickname:    user.Nickname,
 		PhoneNumber: user.PhoneNumber,
 		Avatar:      user.Avatar,
@@ -43,7 +43,7 @@ type UserDAOImpl struct {
 	db gorm_addons.IDB
 }
 
-func (dao *UserDAOImpl) CreateUser(c *user_management_service.CreateUserBO, id int64, dateJoined time.Time) (*bo.UserBO, error) {
+func (dao *UserDAOImpl) CreateUser(c *bo.CreateUserBO, id int64, dateJoined time.Time) (*bo.UserBO, error) {
 	newUser := tCreateUserBO2User(c)
 	newUser.ID = id
 	newUser.DateJoined = dateJoined
@@ -58,7 +58,7 @@ func (dao *UserDAOImpl) CreateUser(c *user_management_service.CreateUserBO, id i
 			return nil, se.ServerKnownError(fmt.Sprintf("create user error: %s", cause))
 		}
 	}
-	return tUser2UserDisplayBO(newUser), nil
+	return tUser2UserBO(newUser), nil
 }
 
 func (dao *UserDAOImpl) UpdatePassword(id int64, password string) error {
@@ -77,16 +77,28 @@ func (dao *UserDAOImpl) CheckPassword(id int64, password string) (bool, error) {
 	return user.Password == password, nil
 }
 
-func (dao *UserDAOImpl) UpdateUser(id int64, updateUserBO *user_management_service.UpdateUserBO) error {
-	updatedFields := dynamic_utils.OptionalStructFieldsToMap(updateUserBO)
-	if len(updatedFields) == 0 {
-		return nil
-	}
+func (dao *UserDAOImpl) updateUserByUpdatedMap(id int64, updatedFields map[string]any) error {
 	result := dao.db.Model(&models.User{}).Where("id = ?", id).Updates(updatedFields)
 	if result.Error != nil {
 		return se.ServerKnownError(fmt.Sprintf("update user error: %s", result.Error))
 	}
 	return nil
+}
+
+func (dao *UserDAOImpl) UpdateUser(id int64, updateUserBO *bo.UpdateUserBO) error {
+	updatedFields := dynamic_utils.OptionalStructFieldsToMap(updateUserBO)
+	if len(updatedFields) == 0 {
+		return nil
+	}
+	return dao.updateUserByUpdatedMap(id, updatedFields)
+}
+
+func (dao *UserDAOImpl) UpdateProfile(id int64, updateUserBO *bo.UpdateProfileBO) error {
+	updatedFields := dynamic_utils.OptionalStructFieldsToMap(updateUserBO)
+	if len(updatedFields) == 0 {
+		return nil
+	}
+	return dao.updateUserByUpdatedMap(id, updatedFields)
 }
 
 func (dao *UserDAOImpl) Count(isActive *bool, isSuperuser *bool) (total int64, err error) {
@@ -124,7 +136,7 @@ func (dao *UserDAOImpl) ListUsers(page int, size int, isActive *bool, isSuperuse
 	}
 	udList := make([]*bo.UserBO, len(users))
 	for i, user := range users {
-		udList[i] = tUser2UserDisplayBO(&user)
+		udList[i] = tUser2UserBO(&user)
 	}
 
 	return udList, nil
@@ -144,7 +156,7 @@ func (dao *UserDAOImpl) getUserByUniqueField(field, value string) (*bo.UserBO, e
 	if err != nil {
 		return nil, err
 	}
-	return tUser2UserDisplayBO(user), nil
+	return tUser2UserBO(user), nil
 }
 
 func (dao *UserDAOImpl) GetUserByID(id int64) (*bo.UserBO, error) {

@@ -10,7 +10,7 @@ import (
 	"log"
 )
 
-var userList = []user_management_service.CreateUserBO{
+var userList = []bo.CreateUserBO{
 	{
 		Email:       "admin@xx.com",
 		Username:    "admin",
@@ -31,7 +31,7 @@ func init() {
 	initializers.InitSnowflakeNode(initializers.Config)
 }
 
-func mustCreateUser(s user_management_service.IUserManagementService, user *user_management_service.CreateUserBO) *bo.UserBO {
+func mustCreateUser(s user_management_service.IUserManagementService, user *bo.CreateUserBO) *bo.UserBO {
 	newUser, err := s.CreateUser(user)
 	if err != nil {
 		log.Panicln("create user failed", err)

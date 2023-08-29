@@ -1,4 +1,4 @@
-package captcha_service
+package bo
 
 import "time"
 

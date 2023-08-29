@@ -1,13 +1,14 @@
 package daos
 
 import (
-	"github.com/three-kinds/user-center/services/reset_password_code_service"
+	"github.com/three-kinds/user-center/services/bo"
 	"time"
 )
 
 type IResetPasswordCodeDAO interface {
-	CreateCode(key string, userID int64, expiration time.Time) (*reset_password_code_service.ResetPasswordCodeBo, error)
-	GetCodeByKey(key string) (*reset_password_code_service.ResetPasswordCodeBo, error)
+	CreateCode(key string, userID int64, expiration time.Time) (*bo.ResetPasswordCodeBo, error)
+	GetCodeByKey(key string) (*bo.ResetPasswordCodeBo, error)
 	DeleteExpiredCode() error
 	DeleteCodeByKey(key string) error
+	CountCode(userID int64) (int64, error)
 }

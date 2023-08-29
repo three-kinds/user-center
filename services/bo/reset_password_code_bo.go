@@ -1,4 +1,4 @@
-package reset_password_code_service
+package bo
 
 import "time"
 

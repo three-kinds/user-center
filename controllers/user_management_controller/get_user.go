@@ -21,5 +21,5 @@ func (c *UserManagementController) GetUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, (*vo.UserVO)(user))
+	ctx.JSON(http.StatusOK, vo.TUserBO2UserVO(user))
 }

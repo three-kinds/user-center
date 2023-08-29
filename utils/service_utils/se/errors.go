@@ -52,3 +52,9 @@ func ForbiddenError(cause string, options ...Option) *ServiceError {
 	e.Cause = cause
 	return e
 }
+
+func AccountDisabledError(options ...Option) *ServiceError {
+	e := BuildError(496, "AccountDisabledError", options...)
+	e.Message = "account disabled"
+	return e
+}
