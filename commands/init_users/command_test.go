@@ -3,9 +3,7 @@ package main
 import (
 	"errors"
 	"github.com/stretchr/testify/assert"
-	"github.com/three-kinds/user-center/daos/models"
 	"github.com/three-kinds/user-center/di"
-	"github.com/three-kinds/user-center/initializers"
 	"github.com/three-kinds/user-center/services/user_management_service"
 	"github.com/three-kinds/user-center/utils/frame_utils/test_utils"
 	"github.com/three-kinds/user-center/utils/generic_utils/testify_addons"
@@ -14,7 +12,7 @@ import (
 )
 
 func TestInitUsers_Success(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 	main()
 	userManagementService := di.NewUserManagementService()
 	newUserCount := len(userList)

@@ -3,7 +3,6 @@ package daos
 import (
 	"errors"
 	"github.com/stretchr/testify/assert"
-	"github.com/three-kinds/user-center/daos/models"
 	"github.com/three-kinds/user-center/initializers"
 	"github.com/three-kinds/user-center/services/bo"
 	"github.com/three-kinds/user-center/utils/frame_utils/test_utils"
@@ -15,11 +14,11 @@ import (
 )
 
 func init() {
-	test_utils.InitOnTestDAO(&models.User{})
+	test_utils.InitOnTestDAO()
 }
 
 func TestUserDAOImpl_CreateUser(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 
 	dao := NewUserDAOImpl(initializers.DB)
 	createUserBo := &bo.CreateUserBO{
@@ -63,7 +62,7 @@ func TestUserDAOImpl_WithMock(t *testing.T) {
 }
 
 func TestUserDAOImpl_FailedWithShit(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 	dao := NewUserDAOImpl(initializers.DB)
 	newUser, err := dao.CreateUser(&bo.CreateUserBO{
 		Email:       "1@xx.com",
@@ -112,7 +111,7 @@ func TestUserDAOImpl_FailedWithShit(t *testing.T) {
 }
 
 func TestUserDAOImpl_Count(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 
 	dao := NewUserDAOImpl(initializers.DB)
 	isActive := true
@@ -141,7 +140,7 @@ func TestUserDAOImpl_Count(t *testing.T) {
 }
 
 func TestUserDAOImpl_UpdatePassword(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 	dao := NewUserDAOImpl(initializers.DB)
 	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
 		Email:       "1@xx.com",
@@ -160,7 +159,7 @@ func TestUserDAOImpl_UpdatePassword(t *testing.T) {
 }
 
 func TestUserDAOImpl_UpdateUser(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 	dao := NewUserDAOImpl(initializers.DB)
 	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
 		Email:       "1@xx.com",
@@ -178,7 +177,7 @@ func TestUserDAOImpl_UpdateUser(t *testing.T) {
 }
 
 func TestUserDAOImpl_ListUsers(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 	dao := NewUserDAOImpl(initializers.DB)
 	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
 		Email:       "1@xx.com",
@@ -196,7 +195,7 @@ func TestUserDAOImpl_ListUsers(t *testing.T) {
 }
 
 func TestUserDAOImpl_GetUser(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 	dao := NewUserDAOImpl(initializers.DB)
 	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
 		Email:       "1@xx.com",
@@ -223,7 +222,7 @@ func TestUserDAOImpl_GetUser(t *testing.T) {
 }
 
 func TestUserDAOImpl_DeleteUserByID(t *testing.T) {
-	test_utils.ClearTables(initializers.DB, &models.User{})
+	test_utils.ClearTables()
 	dao := NewUserDAOImpl(initializers.DB)
 	newUser, _ := dao.CreateUser(&bo.CreateUserBO{
 		Email:       "1@xx.com",
