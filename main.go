@@ -6,8 +6,8 @@ import (
 	"github.com/three-kinds/user-center/daos/models"
 	"github.com/three-kinds/user-center/di"
 	"github.com/three-kinds/user-center/initializers"
+	"github.com/three-kinds/user-center/utils/frame_utils/middlewares"
 	"log"
-	"net/http"
 )
 
 func init() {
@@ -20,14 +20,15 @@ func init() {
 
 func main() {
 	server := gin.New()
+	server.Use(middlewares.JsonLogger())
 	server.Use(gin.Recovery())
+	server.MaxMultipartMemory = 64 << 20
 	// build router
 	router := server.Group("/api")
-	router.GET("/health", func(context *gin.Context) {
-		context.JSON(http.StatusOK, gin.H{"status": "OK"})
-	})
-
+	di.RegisterOperationRouter(router)
 	di.RegisterAuthControllerRouter(router)
-
+	di.RegisterProfileControllerRouter(router)
+	di.RegisterUserManagementControllerRouter(router)
+	// run server
 	log.Fatal(server.Run(fmt.Sprintf(":%d", initializers.Config.ServerPort)))
 }

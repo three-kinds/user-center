@@ -7,7 +7,14 @@ import (
 	"github.com/three-kinds/user-center/controllers/user_management_controller"
 	"github.com/three-kinds/user-center/initializers"
 	"github.com/three-kinds/user-center/utils/frame_utils/middlewares"
+	"net/http"
 )
+
+func RegisterOperationRouter(rg *gin.RouterGroup) {
+	rg.GET("/health", func(context *gin.Context) {
+		context.JSON(http.StatusOK, gin.H{"status": "OK"})
+	})
+}
 
 func RegisterAuthControllerRouter(rg *gin.RouterGroup) {
 	controller := auth_controller.NewAuthController(NewAuthService())
